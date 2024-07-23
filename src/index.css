@@ -16,6 +16,7 @@ body {
   height: 100vh;
   color: var(--white);
 }
+
 body:before {
   content: "";
   position: absolute;
