@@ -16,6 +16,7 @@ export default function Form({ fetchWeather }: FormProps) {
     });
 
     const [alert, setAlert] = useState("");
+
     const handleChange = (e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>) => {
         setSearch({
             ...search,
