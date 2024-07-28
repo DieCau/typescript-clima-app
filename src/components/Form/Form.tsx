@@ -2,49 +2,54 @@ import { ChangeEvent, FormEvent, useState } from "react";
 import { countries } from "../../data/countries";
 import styles from "./Form.module.css"
 import Alert from "../Alert/Alert";
+import { SearchType } from "../../types";
 
-export default function Form() {
+type FormProps = {
+    fetchWeather: (search: SearchType) => Promise<void>
+}
 
-    const [search, setSearch] = useState({
+export default function Form({ fetchWeather }: FormProps) {
+
+    const [search, setSearch] = useState<SearchType>({
         city: "",
         country: ""
     });
 
     const [alert, setAlert] = useState("");
-    
-
     const handleChange = (e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>) => {
         setSearch({
             ...search,
-            [e.target.name] : e.target.value
-        }) 
+            [e.target.name]: e.target.value
+        })
     }
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
         if (Object.values(search).includes("")) {
-            setAlert('Todos los campos son obligatorios')  
-            return 
+            setAlert('Todos los campos son obligatorios')
+            return
         }
+
+        fetchWeather(search)
     }
 
     return (
-        <form 
+        <form
             className={styles.form}
             onSubmit={handleSubmit}
         >
-            { alert && <Alert>{alert}</Alert> }
+            {alert && <Alert>{alert}</Alert>}
 
             <div className={styles.field}>
                 <label htmlFor="city">Ciudad:</label>
-                <input 
-                    type="text" 
-                    name="city" 
-                    id="city" 
+                <input
+                    type="text"
+                    name="city"
+                    id="city"
                     placeholder="Ciudad..."
                     value={search.city}
-                    onChange={handleChange} 
+                    onChange={handleChange}
                 />
             </div>
             <div className={styles.field}>
