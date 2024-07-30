@@ -1,7 +1,7 @@
 import axios from "axios";
 import { z } from "zod";
 import { SearchType } from "../types";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 // import { object, number, string, InferOutput, parse } from "valibot";
 
 // TYPE GUARD O ASSERTION
@@ -81,14 +81,18 @@ export default function useWeather() {
       const { data: weatherResult } = await axios(weatherUrl);
       const result = Weather.safeParse(weatherResult);
       if (result.success) {
-        setWeather(result.data)
+        setWeather(result.data);
       }
     } catch (error) {
       console.log(error);
     }
   };
+
+  const hasWeatherData = useMemo(() => weather.name, [weather]);
+
   return {
     weather,
     fetchWeather,
+    hasWeatherData,
   };
 }
